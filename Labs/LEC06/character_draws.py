@@ -67,16 +67,16 @@ def draw_rectangle():
 
 def draw_triangle_bottom():
     print('TRIANGLE_BOTTOM')
-    for x in range(50, 750 + 1, 5):
-        draw_character(x, 90)
+    for x in range(LEFT_X, RIGHT_X + 1, 5):
+        draw_character(x, BOTTOM_Y)
     pass
 
 
 def draw_triangle_right_up():
     print('TRIANGLE_RIGHT_UP')
     for t in range(0, 100 + 1, 1):
-        x = 750 + (400 - 750) * (t / 100)
-        y = 90 + (550 - 90) * (t / 100)
+        x = RIGHT_X + (400 - RIGHT_X) * (t / 100)
+        y = BOTTOM_Y + (TOP_Y - BOTTOM_Y) * (t / 100)
         draw_character(x, y)
     pass
 
@@ -84,8 +84,8 @@ def draw_triangle_right_up():
 def draw_triangle_left_down():
     print('TRIANGLE_LEFT_DOWN')
     for t in range(0, 100 + 1, 1):
-        x = 400 + (50 - 400) * (t / 100)
-        y = 550 + (90 - 550) * (t / 100)
+        x = 400 + (LEFT_X - 400) * (t / 100)
+        y = TOP_Y + (BOTTOM_Y - TOP_Y) * (t / 100)
         draw_character(x, y)
     pass
 
