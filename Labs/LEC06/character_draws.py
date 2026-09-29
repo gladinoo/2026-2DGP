@@ -4,6 +4,9 @@ import math
 CANVAS_WIDTH, CANVAS_HEIGHT = 800, 600
 open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
+LEFT_X, RIGHT_X = 50, 750
+BOTTOM_Y, TOP_Y = 90, 550
+
 character = load_image('character.png')
 
 
