@@ -22,7 +22,8 @@ def move_circle():
 
 
 def move_top():
-    pass
+    for x in range(50, 750 + 1, 5):
+        draw_boy(x, 550)
 
 
 def move_right():
@@ -44,5 +45,5 @@ def move_rectangle():
     move_left()
 
 
-move_circle()
+move_top()
 close_canvas()
