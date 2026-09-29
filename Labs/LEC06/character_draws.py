@@ -6,6 +6,8 @@ open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
 LEFT_X, RIGHT_X = 50, 750
 BOTTOM_Y, TOP_Y = 90, 550
+CENTER_X, CENTER_Y = 400, 300
+RADIUS = 200
 
 character = load_image('character.png')
 
@@ -21,8 +23,8 @@ def draw_circle():
     print('CIRCLE')
     for deg in range(0, 360, 5):
         rad = math.radians(deg)
-        x = 400 + 200 * math.cos(rad)
-        y = 300 + 200 * math.sin(rad)
+        x = CENTER_X + RADIUS * math.cos(rad)
+        y = CENTER_Y + RADIUS * math.sin(rad)
         draw_character(x, y)
     pass
 
