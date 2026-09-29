@@ -68,9 +68,19 @@ def draw_triangle_bottom():
     pass
 
 
+def draw_triangle_right_up():
+    print('TRIANGLE_RIGHT_UP')
+    for t in range(0, 100 + 1, 1):
+        x = 750 + (400 - 750) * (t / 100)
+        y = 90 + (550 - 90) * (t / 100)
+        draw_character(x, y)
+    pass
+
+
 def draw_triangle():
     print('TRIANGLE')
     draw_triangle_bottom()
+    draw_triangle_right_up()
     pass
 
 
