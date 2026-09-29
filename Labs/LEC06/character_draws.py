@@ -8,6 +8,7 @@ LEFT_X, RIGHT_X = 50, 750
 BOTTOM_Y, TOP_Y = 90, 550
 CENTER_X, CENTER_Y = 400, 300
 RADIUS = 200
+FRAME_DELAY = 0.01
 
 character = load_image('character.png')
 
@@ -16,7 +17,7 @@ def draw_character(x, y):
     clear_canvas()
     character.draw(x, y)
     update_canvas()
-    delay(0.01)
+    delay(FRAME_DELAY)
 
 
 def draw_circle():
