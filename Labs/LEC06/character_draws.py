@@ -1,49 +1,38 @@
-import math
 from pico2d import *
+import math
 
-open_canvas(800, 600)
+open_canvas()
 
-boy = load_image('character.png')
-
-
-def draw_boy(x, y):
-    clear_canvas()
-    boy.draw(x, y)
-    update_canvas()
-    delay(0.01)
+character = load_image('character.png')
 
 
-def move_circle():
-    for degree in range(360):
-        theta = math.radians(degree)
-        x = 400 + 200 * math.cos(theta)
-        y = 300 + 200 * math.sin(theta)
-        draw_boy(x, y)
-
-
-def move_top():
-    for x in range(50, 750 + 1, 5):
-        draw_boy(x, 550)
-
-
-def move_right():
+def draw_circle():
+    print('CIRCLE')
+    for deg in range(0, 360, 5):
+        rad = math.radians(deg)
+        x = 400 + 200 * math.cos(rad)
+        y = 300 + 200 * math.sin(rad)
+        clear_canvas()
+        character.draw(x, y)
+        update_canvas()
+        delay(0.1)
     pass
 
 
-def move_bottom():
+def draw_rectangle():
+    print('RECTANGLE')
     pass
 
 
-def move_left():
+def draw_triangle():
+    print('TRIANGLE')
     pass
 
 
-def move_rectangle():
-    move_top()
-    move_right()
-    move_bottom()
-    move_left()
+while True:
+    draw_circle()
+    draw_rectangle()
+    draw_triangle()
+    pass
 
-
-move_top()
 close_canvas()
