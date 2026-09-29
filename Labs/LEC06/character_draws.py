@@ -1,7 +1,8 @@
 from pico2d import *
 import math
 
-open_canvas()
+CANVAS_WIDTH, CANVAS_HEIGHT = 800, 600
+open_canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
 character = load_image('character.png')
 
