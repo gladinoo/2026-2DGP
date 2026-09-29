@@ -15,10 +15,22 @@ TRIANGLE_TOP_X, TRIANGLE_TOP_Y = 400, TOP_Y
 character = load_image('character.png')
 
 
+def handle_events():
+    events = get_events()
+    for event in events:
+        if event.type == SDL_QUIT:
+            close_canvas()
+            exit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            close_canvas()
+            exit()
+
+
 def draw_character(x, y):
     clear_canvas()
     character.draw(x, y)
     update_canvas()
+    handle_events()
     delay(FRAME_DELAY)
 
 
