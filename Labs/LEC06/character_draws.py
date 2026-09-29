@@ -60,8 +60,17 @@ def draw_rectangle():
     pass
 
 
+
+def draw_triangle_bottom():
+    print('TRIANGLE_BOTTOM')
+    for x in range(50, 750 + 1, 5):
+        draw_character(x, 90)
+    pass
+
+
 def draw_triangle():
     print('TRIANGLE')
+    draw_triangle_bottom()
     pass
 
 
