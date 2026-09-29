@@ -1,0 +1,10 @@
+{
+  "include": ["."],
+  "extraPaths": [
+    "C:/Users/USER/AppData/Local/Programs/Python/Python312/Lib/site-packages",
+    "C:/Users/USER/miniconda3/Lib/site-packages"
+  ],
+  "reportMissingImports": false,
+  "reportUndefinedVariable": false,
+  "reportGeneralTypeIssues": false
+}
