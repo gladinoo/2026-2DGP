@@ -1,3 +1,7 @@
+"""
+LEC06 / Drill 04: Character Animation
+Moves the character in circular, rectangular, and triangular trajectories infinitely.
+"""
 from pico2d import *
 import math
 
@@ -16,6 +20,7 @@ character = load_image('character.png')
 
 
 def handle_events():
+    """Poll SDL events to handle window close and ESC key exit cleanly."""
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -27,6 +32,7 @@ def handle_events():
 
 
 def draw_character(x, y):
+    """Clear canvas, render character at (x, y), handle events, and update screen."""
     clear_canvas()
     character.draw(x, y)
     update_canvas()
@@ -35,6 +41,7 @@ def draw_character(x, y):
 
 
 def draw_circle():
+    """Move character along a circular trajectory using trigonometric equations."""
     print('CIRCLE')
     for deg in range(0, 360, STEP_SIZE):
         rad = math.radians(deg)
@@ -73,6 +80,7 @@ def draw_left():
 
 
 def draw_rectangle():
+    """Move character along a rectangular border (top -> right -> bottom -> left)."""
     print('RECTANGLE')
     draw_top()
     draw_right()
@@ -108,6 +116,7 @@ def draw_triangle_left_down():
 
 
 def draw_triangle():
+    """Move character along a triangular trajectory (bottom -> right-up -> left-down)."""
     print('TRIANGLE')
     draw_triangle_bottom()
     draw_triangle_right_up()
