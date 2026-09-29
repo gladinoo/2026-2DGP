@@ -10,6 +10,7 @@ CENTER_X, CENTER_Y = 400, 300
 RADIUS = 200
 FRAME_DELAY = 0.01
 STEP_SIZE = 5
+TRIANGLE_TOP_X, TRIANGLE_TOP_Y = 400, TOP_Y
 
 character = load_image('character.png')
 
@@ -79,8 +80,8 @@ def draw_triangle_bottom():
 def draw_triangle_right_up():
     print('TRIANGLE_RIGHT_UP')
     for t in range(0, 100 + 1, 1):
-        x = RIGHT_X + (400 - RIGHT_X) * (t / 100)
-        y = BOTTOM_Y + (TOP_Y - BOTTOM_Y) * (t / 100)
+        x = RIGHT_X + (TRIANGLE_TOP_X - RIGHT_X) * (t / 100)
+        y = BOTTOM_Y + (TRIANGLE_TOP_Y - BOTTOM_Y) * (t / 100)
         draw_character(x, y)
     pass
 
@@ -88,8 +89,8 @@ def draw_triangle_right_up():
 def draw_triangle_left_down():
     print('TRIANGLE_LEFT_DOWN')
     for t in range(0, 100 + 1, 1):
-        x = 400 + (LEFT_X - 400) * (t / 100)
-        y = TOP_Y + (BOTTOM_Y - TOP_Y) * (t / 100)
+        x = TRIANGLE_TOP_X + (LEFT_X - TRIANGLE_TOP_X) * (t / 100)
+        y = TRIANGLE_TOP_Y + (BOTTOM_Y - TRIANGLE_TOP_Y) * (t / 100)
         draw_character(x, y)
     pass
 
