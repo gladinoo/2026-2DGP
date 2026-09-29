@@ -9,6 +9,7 @@ BOTTOM_Y, TOP_Y = 90, 550
 CENTER_X, CENTER_Y = 400, 300
 RADIUS = 200
 FRAME_DELAY = 0.01
+STEP_SIZE = 5
 
 character = load_image('character.png')
 
@@ -22,7 +23,7 @@ def draw_character(x, y):
 
 def draw_circle():
     print('CIRCLE')
-    for deg in range(0, 360, 5):
+    for deg in range(0, 360, STEP_SIZE):
         rad = math.radians(deg)
         x = CENTER_X + RADIUS * math.cos(rad)
         y = CENTER_Y + RADIUS * math.sin(rad)
@@ -32,28 +33,28 @@ def draw_circle():
 
 def draw_top():
     print('TOP')
-    for x in range(LEFT_X, RIGHT_X + 1, 5):
+    for x in range(LEFT_X, RIGHT_X + 1, STEP_SIZE):
         draw_character(x, TOP_Y)
     pass
 
 
 def draw_right():
     print('RIGHT')
-    for y in range(TOP_Y, BOTTOM_Y - 1, -5):
+    for y in range(TOP_Y, BOTTOM_Y - 1, -STEP_SIZE):
         draw_character(RIGHT_X, y)
     pass
 
 
 def draw_bottom():
     print('BOTTOM')
-    for x in range(RIGHT_X, LEFT_X - 1, -5):
+    for x in range(RIGHT_X, LEFT_X - 1, -STEP_SIZE):
         draw_character(x, BOTTOM_Y)
     pass
 
 
 def draw_left():
     print('LEFT')
-    for y in range(BOTTOM_Y, TOP_Y + 1, 5):
+    for y in range(BOTTOM_Y, TOP_Y + 1, STEP_SIZE):
         draw_character(LEFT_X, y)
     pass
 
@@ -70,7 +71,7 @@ def draw_rectangle():
 
 def draw_triangle_bottom():
     print('TRIANGLE_BOTTOM')
-    for x in range(LEFT_X, RIGHT_X + 1, 5):
+    for x in range(LEFT_X, RIGHT_X + 1, STEP_SIZE):
         draw_character(x, BOTTOM_Y)
     pass
 
