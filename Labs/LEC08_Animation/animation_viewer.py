@@ -28,4 +28,20 @@ def handle_events():
             exit()
 
 
+def draw_frame(frame_data):
+    left, bottom, width, height = frame_data
+    character.clip_draw(
+        left, bottom, width, height,
+        CENTER_X, CENTER_Y,
+        int(width * SCALE), int(height * SCALE)
+    )
+
+
+# 단일 프레임 렌더링 테스트
+clear_canvas()
+grass.draw(400, 30)
+draw_frame(IDLE_FRAMES[0])
+update_canvas()
+delay(0.5)
+
 close_canvas()
