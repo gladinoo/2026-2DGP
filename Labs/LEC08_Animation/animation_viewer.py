@@ -57,4 +57,13 @@ for frame_data in IDLE_FRAMES:
     handle_events()
     delay(0.1)
 
+# WALK 액션 프레임 순환 재생
+for frame_data in WALK_FRAMES:
+    clear_canvas()
+    grass.draw(400, 30)
+    draw_frame(frame_data)
+    update_canvas()
+    handle_events()
+    delay(0.1)
+
 close_canvas()
