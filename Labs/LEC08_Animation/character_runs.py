@@ -20,6 +20,21 @@ for x in range(5, 750, 5):
     frame = (frame + 1) % 8
     delay(0.05)
 
+# 왼쪽 달리기
+for x in range(750, 5, -5):
+    clear_canvas()
+    grass.draw(400, 30)
+    character.clip_composite_draw(
+        frame * 100, 100,
+        100, 100,
+        0, 'h',
+        x, 90,
+        100, 100
+    )
+    update_canvas()
+    frame = (frame + 1) % 8
+    delay(0.05)
+
 
 close_canvas()
 
