@@ -80,6 +80,8 @@ def play_action(action_frames, repeat_count=5, frame_delay=0.1):
             update_canvas()
             handle_events()
             delay(frame_delay)
+    # 한 동작 5회 반복 완료 후, 동작 변경 전 1초 멈춤
+    delay(1.0)
 
 
 # 동작별 5회 반복 재생
