@@ -37,11 +37,13 @@ def draw_frame(frame_data):
     )
 
 
-# 단일 프레임 렌더링 테스트
-clear_canvas()
-grass.draw(400, 30)
-draw_frame(IDLE_FRAMES[0])
-update_canvas()
-delay(0.5)
+# IDLE 액션 프레임 순환 재생
+for frame_data in IDLE_FRAMES:
+    clear_canvas()
+    grass.draw(400, 30)
+    draw_frame(frame_data)
+    update_canvas()
+    handle_events()
+    delay(0.1)
 
 close_canvas()
