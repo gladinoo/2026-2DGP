@@ -8,6 +8,14 @@ character = load_image('animation_sheet.png')
 CENTER_X, CENTER_Y = 400, 300
 SCALE = 3.2
 
+# 1. 대기 동작 (IDLE): 4개 프레임, 프레임별 크기가 다른 복잡한 구조
+IDLE_FRAMES = (
+    (0, 300, 100, 100),
+    (100, 300, 102, 100),
+    (202, 300, 98, 100),
+    (300, 300, 100, 100),
+)
+
 
 def handle_events():
     events = get_events()
