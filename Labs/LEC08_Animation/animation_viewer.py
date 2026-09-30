@@ -98,4 +98,13 @@ for frame_data in RUN_FRAMES:
     handle_events()
     delay(0.08)
 
+# ATTACK 액션 프레임 순환 재생
+for frame_data in ATTACK_FRAMES:
+    clear_canvas()
+    grass.draw(400, 30)
+    draw_frame(frame_data)
+    update_canvas()
+    handle_events()
+    delay(0.12)
+
 close_canvas()
