@@ -1,1 +1,7 @@
 from pico2d import *
+
+open_canvas(800, 600)
+
+# TODO: Add sprite animation logic
+
+close_canvas()
