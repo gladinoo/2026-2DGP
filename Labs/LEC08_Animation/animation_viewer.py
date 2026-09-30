@@ -71,20 +71,21 @@ def draw_frame(frame_data):
     )
 
 
-def play_action(action_frames, frame_delay=0.1):
-    for frame_data in action_frames:
-        clear_canvas()
-        grass.draw(400, 30)
-        draw_frame(frame_data)
-        update_canvas()
-        handle_events()
-        delay(frame_delay)
+def play_action(action_frames, repeat_count=5, frame_delay=0.1):
+    for _ in range(repeat_count):
+        for frame_data in action_frames:
+            clear_canvas()
+            grass.draw(400, 30)
+            draw_frame(frame_data)
+            update_canvas()
+            handle_events()
+            delay(frame_delay)
 
 
-# 동작별 1회 순차 재생 테스트
-play_action(IDLE_FRAMES, 0.1)
-play_action(WALK_FRAMES, 0.1)
-play_action(RUN_FRAMES, 0.08)
-play_action(ATTACK_FRAMES, 0.12)
+# 동작별 5회 반복 재생
+play_action(IDLE_FRAMES, repeat_count=5, frame_delay=0.1)
+play_action(WALK_FRAMES, repeat_count=5, frame_delay=0.1)
+play_action(RUN_FRAMES, repeat_count=5, frame_delay=0.08)
+play_action(ATTACK_FRAMES, repeat_count=5, frame_delay=0.12)
 
 close_canvas()
