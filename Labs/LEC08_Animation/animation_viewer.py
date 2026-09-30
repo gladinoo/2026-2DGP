@@ -84,10 +84,15 @@ def play_action(action_frames, repeat_count=5, frame_delay=0.1):
     delay(1.0)
 
 
-# 동작별 5회 반복 재생
-play_action(IDLE_FRAMES, repeat_count=5, frame_delay=0.1)
-play_action(WALK_FRAMES, repeat_count=5, frame_delay=0.1)
-play_action(RUN_FRAMES, repeat_count=5, frame_delay=0.08)
-play_action(ATTACK_FRAMES, repeat_count=5, frame_delay=0.12)
+# 전체 액션 시퀀스 파이프라인 정의 (액션 이름, 프레임 튜플, 프레임 딜레이)
+ACTIONS = (
+    ('IDLE', IDLE_FRAMES, 0.1),
+    ('WALK', WALK_FRAMES, 0.1),
+    ('RUN', RUN_FRAMES, 0.08),
+    ('ATTACK', ATTACK_FRAMES, 0.12),
+)
+
+for action_name, frames, frame_delay in ACTIONS:
+    play_action(frames, repeat_count=5, frame_delay=frame_delay)
 
 close_canvas()
