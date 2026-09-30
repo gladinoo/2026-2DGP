@@ -92,7 +92,9 @@ ACTIONS = (
     ('ATTACK', ATTACK_FRAMES, 0.12),
 )
 
-for action_name, frames, frame_delay in ACTIONS:
-    play_action(frames, repeat_count=5, frame_delay=frame_delay)
+# 무한 반복 실행 (모든 동작 완료 후 처음부터 다시 시작)
+while True:
+    for action_name, frames, frame_delay in ACTIONS:
+        play_action(frames, repeat_count=5, frame_delay=frame_delay)
 
 close_canvas()
