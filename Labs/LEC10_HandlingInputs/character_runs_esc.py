@@ -4,30 +4,34 @@ open_canvas()
 grass = load_image('grass.png')
 character = load_image('animation_sheet.png')
 
-
-# fill here
-
+# PPT 슬라이드 기반: 전역 변수 running
+running = True
 
 
 def handle_events():
-    # fill here
-    pass
+    global running
+
+    # PPT 슬라이드 기반: get_events() 순회 및 ESC / SDL_QUIT 처리
+    for event in get_events():
+        if event.type == SDL_QUIT:
+            running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            running = False
 
 
 frame = 0
 for x in range(0, 800, 5):
-
     clear_canvas()
     grass.draw(400, 30)
     character.clip_draw(frame * 100, 100, 100, 100, x, 90)
     update_canvas()
 
-    # fill here
-
-
+    # PPT 슬라이드 기반: 루프 내에서 이벤트 처리 및 종료 조건 검사
+    handle_events()
+    if not running:
+        break
 
     frame = (frame + 1) % 8
     delay(0.05)
-
 
 close_canvas()

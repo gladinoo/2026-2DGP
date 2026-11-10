@@ -1,3 +1,7 @@
 {
+    "python.defaultInterpreterPath": "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "python.analysis.extraPaths": [
+        "C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages"
+    ],
     "python.terminal.executeInFileDir": true
 }
