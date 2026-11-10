@@ -5,6 +5,9 @@ from sdl2 import (SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT,
                   SDLK_SPACE)
 from transitions import Machine
 
+from ball import Ball
+import game_world
+
 
 class Boy:
     def __init__(self):
@@ -43,11 +46,24 @@ class Boy:
     def on_enter_RUN(self):
         self.frame = 0
 
+    def fire_ball(self):
+        # 소년이 바라보는 방향으로 날아가는 볼 생성 후 Layer 1(전경)에 추가!
+        ball = Ball(self.x, self.y, self.face_dir * 10)
+        game_world.add_object(ball, 1)
+
     def handle_event(self, event):
+        # 자고 있을 때 스페이스바 누르면 일어나기만 함
         if (event.type == SDL_KEYDOWN and
                 event.key == SDLK_SPACE and
                 self.state == 'SLEEP'):
             self.wake_up()
+            return
+
+        # 깨어있을 때 (IDLE 또는 RUN) 스페이스바 누르면 볼 발사!
+        if (event.type == SDL_KEYDOWN and
+                event.key == SDLK_SPACE and
+                self.state in ('IDLE', 'RUN')):
+            self.fire_ball()
             return
 
         if (event.type not in (SDL_KEYDOWN, SDL_KEYUP) or
