@@ -1,12 +1,74 @@
 from math import pi
-
-from pico2d import get_canvas_width, get_time, load_image
-from sdl2 import (SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT,
-                  SDLK_SPACE)
+from pico2d import load_image, get_time, get_canvas_width
+from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_LEFT, SDLK_RIGHT, SDLK_SPACE
 from transitions import Machine
 
 import game_world
 from ball import Ball
+
+
+class Idle:
+    def enter(self, boy):
+        boy.idle_started_at = get_time()
+        boy.frame = 0
+
+    def do(self, boy):
+        if get_time() - boy.idle_started_at >= 5.0:
+            boy.fall_asleep()
+        else:
+            boy.frame = (boy.frame + 1) % 8
+
+    def draw(self, boy):
+        row = 300 if boy.face_dir == 1 else 200
+        boy.image.clip_draw(boy.frame * 100, row, 100, 100, boy.x, boy.y)
+
+    def space(self, boy):
+        boy.fire_ball()
+
+    def move(self, boy):
+        boy.start_run()
+
+
+class Sleep:
+    def enter(self, boy):
+        boy.frame = 0
+
+    def do(self, boy):
+        pass
+
+    def draw(self, boy):
+        angle = pi / 2 if boy.face_dir == 1 else -pi / 2
+        flip = '' if boy.face_dir == 1 else 'h'
+        boy.image.clip_composite_draw(
+            boy.frame * 100, 300, 100, 100,
+            angle, flip, boy.x, boy.y - 30, 100, 100
+        )
+
+    def space(self, boy):
+        boy.wake_up()
+
+    def move(self, boy):
+        boy.start_run()
+
+
+class Run:
+    def enter(self, boy):
+        boy.frame = 0
+
+    def do(self, boy):
+        boy.frame = (boy.frame + 1) % 8
+        boy.x += boy.dir * 5
+        boy.x = max(25, min(get_canvas_width() - 25, boy.x))
+
+    def draw(self, boy):
+        row = 100 if boy.face_dir == 1 else 0
+        boy.image.clip_draw(boy.frame * 100, row, 100, 100, boy.x, boy.y)
+
+    def space(self, boy):
+        boy.fire_ball()
+
+    def move(self, boy):
+        pass
 
 
 class Boy:
@@ -18,53 +80,57 @@ class Boy:
         self.dir = 0
         self.face_dir = 1
         self.pressed_keys = set()
+        self.item = 'Ball'  # 기본 선택 아이템: 'Ball' (작은 공), 'BigBall' (큰 공), None (공 없음)
+
+        self.states = {'IDLE': Idle(), 'SLEEP': Sleep(), 'RUN': Run()}
 
         self.machine = Machine(
             model=self,
             states=['IDLE', 'SLEEP', 'RUN'],
             transitions=[
-                {'trigger': 'fall_asleep',
-                 'source': 'IDLE', 'dest': 'SLEEP'},
-                {'trigger': 'wake_up',
-                 'source': 'SLEEP', 'dest': 'IDLE'},
-                {'trigger': 'start_run',
-                 'source': ['IDLE', 'SLEEP'], 'dest': 'RUN'},
-                {'trigger': 'stop_run',
-                 'source': 'RUN', 'dest': 'IDLE'},
+                {'trigger': 'fall_asleep', 'source': 'IDLE', 'dest': 'SLEEP'},
+                {'trigger': 'wake_up', 'source': 'SLEEP', 'dest': 'IDLE'},
+                {'trigger': 'start_run', 'source': ['IDLE', 'SLEEP'], 'dest': 'RUN'},
+                {'trigger': 'stop_run', 'source': 'RUN', 'dest': 'IDLE'},
             ],
             initial='IDLE',
             auto_transitions=False,
         )
 
+    def update(self):
+        self.states[self.state].do(self)
+
+    def draw(self):
+        self.states[self.state].draw(self)
+
     def on_enter_IDLE(self):
-        self.idle_started_at = get_time()
-        self.frame = 0
+        self.states['IDLE'].enter(self)
 
     def on_enter_SLEEP(self):
-        self.frame = 0
+        self.states['SLEEP'].enter(self)
 
     def on_enter_RUN(self):
-        self.frame = 0
+        self.states['RUN'].enter(self)
 
     def fire_ball(self):
-        ball = Ball(self.x, self.y, self.face_dir * 10)
-        game_world.add_oject(ball)
+        if self.item is None or self.item == 0:
+            return
+        ball_type = 1 if (self.item == 'Ball' or self.item == 1) else 2
+        ball = Ball(self.x, self.y, self.face_dir * 10, ball_type=ball_type)
+        game_world.add_object(ball, 1)
+
+    def pause(self):
+        self.pressed_keys.clear()
+        if self.state == 'RUN':
+            self.dir = 0
+            self.stop_run()
 
     def handle_event(self, event):
-        if (event.type == SDL_KEYDOWN and
-                event.key == SDLK_SPACE and
-                self.state == 'SLEEP'):
-            self.wake_up()
+        if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
+            self.states[self.state].space(self)
             return
 
-        if (event.type == SDL_KEYDOWN and
-                event.key == SDLK_SPACE and
-                self.state in ('IDLE', 'RUN')):
-            self.fire_ball()
-            return
-
-        if (event.type not in (SDL_KEYDOWN, SDL_KEYUP) or
-                event.key not in (SDLK_LEFT, SDLK_RIGHT)):
+        if event.type not in (SDL_KEYDOWN, SDL_KEYUP) or event.key not in (SDLK_LEFT, SDLK_RIGHT):
             return
 
         if event.type == SDL_KEYDOWN:
@@ -72,42 +138,19 @@ class Boy:
         else:
             self.pressed_keys.discard(event.key)
 
-        direction = (int(SDLK_RIGHT in self.pressed_keys) -
-                     int(SDLK_LEFT in self.pressed_keys))
-
-        if direction != 0:
-            self.dir = direction
-            self.face_dir = direction
-            if self.state in ('IDLE', 'SLEEP'):
-                self.start_run()
-        elif self.state == 'RUN':
+        if SDLK_RIGHT in self.pressed_keys and SDLK_LEFT in self.pressed_keys:
             self.dir = 0
-            self.stop_run()
-
-    def update(self):
-        if self.state == 'IDLE':
-            if get_time() - self.idle_started_at >= 5.0:
-                self.fall_asleep()
-            else:
-                self.frame = (self.frame + 1) % 8
-        elif self.state == 'RUN':
-            self.frame = (self.frame + 1) % 8
-            self.x += self.dir * 5
-            self.x = max(25, min(get_canvas_width() - 25, self.x))
-
-    def draw(self):
-        if self.state == 'SLEEP':
-            angle = pi / 2 if self.face_dir == 1 else -pi / 2
-            flip = '' if self.face_dir == 1 else 'h'
-            self.image.clip_composite_draw(
-                self.frame * 100, 300, 100, 100,
-                angle, flip, self.x, self.y - 30, 100, 100
-            )
-        elif self.state == 'RUN':
-            row = 100 if self.face_dir == 1 else 0
-            self.image.clip_draw(self.frame * 100, row, 100, 100,
-                                 self.x, self.y)
+            if self.state == 'RUN':
+                self.stop_run()
+        elif SDLK_RIGHT in self.pressed_keys:
+            self.dir = 1
+            self.face_dir = 1
+            self.states[self.state].move(self)
+        elif SDLK_LEFT in self.pressed_keys:
+            self.dir = -1
+            self.face_dir = -1
+            self.states[self.state].move(self)
         else:
-            row = 300 if self.face_dir == 1 else 200
-            self.image.clip_draw(self.frame * 100, row, 100, 100,
-                                 self.x, self.y)
+            self.dir = 0
+            if self.state == 'RUN':
+                self.stop_run()
